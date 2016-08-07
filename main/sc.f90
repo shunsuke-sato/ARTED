@@ -285,6 +285,9 @@ Program main
     end if
   endif
 
+  allocate(V_Yukawa(NL),V_Yukawa_gs(NL))
+  call Hartree_Yukawa
+  V_Yukawa_gs = V_Yukawa
 
 
   call timelog_reset

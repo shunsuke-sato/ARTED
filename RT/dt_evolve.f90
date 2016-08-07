@@ -114,7 +114,8 @@ Subroutine dt_evolve_omp_KB(iter)
   call dt_evolve_hpsi
 
   call psi_rho_RT
-  call Hartree
+!  call Hartree
+  call Hartree_Yukawa
 ! yabana
   call Exc_Cor('RT')
 ! yabana
@@ -125,7 +126,8 @@ Subroutine dt_evolve_omp_KB(iter)
 
 !$omp parallel do
   do i=1,NL
-    Vloc(i)=Vh(i)+Vpsl(i)+Vexc(i)
+!    Vloc(i)=Vh(i)+Vpsl(i)+Vexc(i)
+    Vloc(i)=Vloc_GS(i)+V_Yukawa(i)-V_Yukawa_gs(i)
   end do
 
   call timelog_end(LOG_DT_EVOLVE)

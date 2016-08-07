@@ -171,6 +171,10 @@ Module Global_Variables
 ! For reentrance 
   character(50) :: cMyrank,file_reentrance
 
+! Time-dependent Hartree with Yukawa-potential
+  real(8),parameter :: aYukawa = 1d0/(10d0)
+  real(8),allocatable :: V_Yukawa(:),V_Yukawa_gs(:)
+
 #if defined(__KNC__) || defined(__AVX512F__)
 # define MEM_ALIGNED 64
 #else
