@@ -28,6 +28,8 @@ Program main
   integer :: iter,ik,ib,ia,i,ixyz
   character(3) :: Rion_update
   character(10) :: functional_t
+  real(8),parameter :: mix_rate = 0.1d0
+  real(8),allocatable :: Vloc_old(:)
 !$ integer :: omp_get_max_threads  
 
   call MPI_init(ierr)
@@ -64,6 +66,7 @@ Program main
   allocate(rho_in(1:NL,1:Nscf+1),rho_out(1:NL,1:Nscf+1))
   rho_in(1:NL,1:Nscf+1)=0.d0; rho_out(1:NL,1:Nscf+1)=0.d0
   allocate(Eall_GS(0:Nscf),esp_var_ave(1:Nscf),esp_var_max(1:Nscf),dns_diff(1:Nscf))
+  allocate(Vloc_old(NL))
   call fd_coef
   call init
   call init_wf
@@ -93,6 +96,7 @@ Program main
   if(functional_t == 'TBmBJ') functional = 'TBmBJ'
 ! yabana
   Vloc(1:NL)=Vh(1:NL)+Vpsl(1:NL)+Vexc(1:NL)
+  Vloc_old = Vloc
 !  call Total_Energy(Rion_update,'GS')
   call Total_Energy_omp(Rion_update,'GS') ! debug
   call Ion_Force_omp(Rion_update,'GS')
@@ -145,7 +149,7 @@ Program main
 
 !    call psi_rho_omp !sym
     call psi_rho_GS
-    call Density_Update(iter) 
+    if(iter < 20)call Density_Update(iter) 
     call Hartree
 ! yabana
     functional_t = functional
@@ -154,6 +158,10 @@ Program main
     if(functional_t == 'TBmBJ' .and. iter < 20) functional = 'TBmBJ'
 ! yabana
     Vloc(1:NL)=Vh(1:NL)+Vpsl(1:NL)+Vexc(1:NL)
+    if(iter >= 20)then
+       Vloc = mix_rate*Vloc + (1d0 - mix_rate)*Vloc_old
+    end if
+    Vloc_old = Vloc
     call Total_Energy_omp(Rion_update,'GS')
     call Ion_Force_omp(Rion_update,'GS')
     call sp_energy_omp
