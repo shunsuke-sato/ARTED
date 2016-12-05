@@ -287,9 +287,12 @@ subroutine init_uniform_k_grid()
     do iy=1,NKy
     do iz=1,NKz
       n=n+1
-      kAc(n,1)=-bLx/2+(ix)*bLx/NKx
-      kAc(n,2)=-bLy/2+(iy)*bLy/NKy
-      kAc(n,3)=-bLz/2+(iz)*bLz/NKz
+!      kAc(n,1)=-bLx/2+(ix)*bLx/NKx
+!      kAc(n,2)=-bLy/2+(iy)*bLy/NKy
+!      kAc(n,3)=-bLz/2+(iz)*bLz/NKz
+      kAc(n,1)=-bLx/2+(ix-0.5d0)*bLx/NKx
+      kAc(n,2)=-bLy/2+(iy-0.5d0)*bLy/NKy
+      kAc(n,3)=-bLz/2+(iz-0.5d0)*bLz/NKz
       wk(n)=1.d0
     enddo
     enddo
