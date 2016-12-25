@@ -1079,7 +1079,8 @@ Subroutine Read_data
   call MPI_BCAST(NE,1,MPI_INTEGER,0,MPI_COMM_WORLD,ierr)
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   if(AE_shape /= 'Asin2cos' .and. AE_shape /= 'Esin2sin' &
-    &.and. AE_shape /= 'input' .and. AE_shape /= 'Asin2_cw' ) call err_finalize('incorrect option for AE_shape')
+ &.and. AE_shape /= 'Acos4sin' .and. AE_shape /= 'A_pow2_4' &
+ &.and. AE_shape /= 'input' .and. AE_shape /= 'Asin2_cw' ) call err_finalize('incorrect option for AE_shape')
 
 
   allocate(Zatom(NE),Kion(NI),Rps(NE),NRps(NE))
