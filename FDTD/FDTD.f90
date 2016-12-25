@@ -289,7 +289,89 @@ subroutine init_Ac_ms
          endif
        enddo
      enddo
-   end if
+
+   else if(AE_shape == 'Acos4sin') then
+     do iy_m=1,NY_m
+       y=iy_m*HY_m
+       do ix_m=NXvacL_m,0
+! t=0
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*tpulse_1*c_light
+         if(abs(x) < 0.5d0*tpulse_1*c_light) then
+           Ac_m(3,ix_m,iy_m)=Epdir_1(3)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**4 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_m(2,ix_m,iy_m)=Epdir_1(2)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**4 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*(tpulse_1+2d0*T1_T2)*c_light
+         if(abs(x) < 0.5d0*tpulse_2*c_light) then
+           Ac_m(3,ix_m,iy_m)=Ac_m(3,ix_m,iy_m) &
+             +Epdir_2(3)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_m(2,ix_m,iy_m)=Ac_m(2,ix_m,iy_m) &
+             +Epdir_2(2)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+! t=+dt
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*tpulse_1*c_light - dt*c_light
+         if(abs(x) < 0.5d0*tpulse_1*c_light) then
+           Ac_new_m(3,ix_m,iy_m)=+Epdir_1(3)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**4 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_new_m(2,ix_m,iy_m)=+Epdir_1(2)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**4 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*(tpulse_1+2d0*T1_T2)*c_light  - dt*c_light
+         if(abs(x) < 0.5d0*tpulse_2*c_light) then
+           Ac_new_m(3,ix_m,iy_m)=Ac_new_m(3,ix_m,iy_m) &
+             +Epdir_2(3)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_new_m(2,ix_m,iy_m)=Ac_new_m(2,ix_m,iy_m) &
+             +Epdir_2(2)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+       enddo
+     enddo
+   else if(AE_shape == 'A_pow2_4' ) then
+     do iy_m=1,NY_m
+       y=iy_m*HY_m
+       do ix_m=NXvacL_m,0
+! t=0
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*tpulse_1*c_light
+         if(abs(x) < 0.5d0*tpulse_1*c_light) then
+           Ac_m(3,ix_m,iy_m)=Epdir_1(3)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**2 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_m(2,ix_m,iy_m)=Epdir_1(2)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**2 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*(tpulse_1+2d0*T1_T2)*c_light
+         if(abs(x) < 0.5d0*tpulse_2*c_light) then
+           Ac_m(3,ix_m,iy_m)=Ac_m(3,ix_m,iy_m) &
+             +Epdir_2(3)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_m(2,ix_m,iy_m)=Ac_m(2,ix_m,iy_m) &
+             +Epdir_2(2)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+! t=+dt
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*tpulse_1*c_light - dt*c_light
+         if(abs(x) < 0.5d0*tpulse_1*c_light) then
+           Ac_new_m(3,ix_m,iy_m)=+Epdir_1(3)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**2 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_new_m(2,ix_m,iy_m)=+Epdir_1(2)/omega_1*f0_1*cos(pi*x/(tpulse_1*c_light))**2 &
+             &*sin(omega_1*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+         x=(ix_m-1)*HX_m+Xstart + 0.5d0*(tpulse_1+2d0*T1_T2)*c_light  - dt*c_light
+         if(abs(x) < 0.5d0*tpulse_2*c_light) then
+           Ac_new_m(3,ix_m,iy_m)=Ac_new_m(3,ix_m,iy_m) &
+             +Epdir_2(3)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+           Ac_new_m(2,ix_m,iy_m)=Ac_new_m(2,ix_m,iy_m) &
+             +Epdir_2(2)/omega_2*f0_2*cos(pi*x/(tpulse_2*c_light))**4*sin(omega_2*x/c_light+phi_CEP_1*2d0*pi)
+         endif
+
+       enddo
+     enddo
+  end if
+
 
  case('2D')
 
