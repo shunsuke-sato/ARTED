@@ -676,7 +676,7 @@ Subroutine Read_data
   end select
 !sym ---
 
-  if(mod(NKx,2)+mod(NKy,2)+mod(NKz,2) /= 0) call err_finalize('NKx,NKy,NKz /= even')
+!  if(mod(NKx,2)+mod(NKy,2)+mod(NKz,2) /= 0) call err_finalize('NKx,NKy,NKz /= even')
   if(mod(NLx,2)+mod(NLy,2)+mod(NLz,2) /= 0) call err_finalize('NLx,NLy,NLz /= even')
   
   call comm_sync_all
