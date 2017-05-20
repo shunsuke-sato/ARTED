@@ -19,7 +19,7 @@ Subroutine init_Ac
   use communication
   implicit none
   integer :: iter
-  real(8) :: tt
+  real(8) :: tt,xx
 
   select case(ext_field)
   case('LR')
@@ -91,6 +91,25 @@ Subroutine init_Ac
         if ( (tt-T1_T2>0d0) .and. (tt-T1_T2<tpulse_2) ) then
           Ac_ext(iter,:)=Ac_ext(iter,:) &
             &-Epdir_2(:)*f0_2/omega_2*(sin(pi*(tt-T1_T2)/tpulse_2))**2*cos(omega_2*(tt-T1_T2)+phi_CEP_2*2d0*pi)
+        endif
+      enddo
+    case('Acos4sin')
+! pulse shape : A(t)=f0/omega*sin(Pi t/T)**2 *cos (omega t+phi_CEP*2d0*pi) 
+! pump laser
+      do iter=0,Nt+1
+        tt=iter*dt
+        xx = tt - 0.5d0*tpulse_1
+        if (abs(xx)<0.5d0*tpulse_1) then
+          Ac_ext(iter,:)=-Epdir_1(:)*f0_1/omega_1*(cos(0.5d0*pi*xx/tpulse_1))**4*sin(omega_1*xx+phi_CEP_1*2d0*pi)
+        end if
+      enddo
+! probe laser
+      do iter=0,Nt+1
+        tt=iter*dt
+        xx = tt - T1_T2 - 0.5d0*tpulse_2
+        if ( abs(xx)< 0.5d0*tpulse_2 ) then
+          Ac_ext(iter,:)=Ac_ext(iter,:) &
+            &-Epdir_2(:)*f0_2/omega_2*(cos(0.5d0*pi*xx/tpulse_2))**4*sin(omega_2*xx+phi_CEP_2*2d0*pi)
         endif
       enddo
     case('input')
