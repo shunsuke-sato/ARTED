@@ -959,7 +959,8 @@ Subroutine Read_data
   call comm_bcast(NE,proc_group(1))
   call comm_sync_all
   if(AE_shape /= 'Asin2cos' .and. AE_shape /= 'Esin2sin' &
-    &.and. AE_shape /= 'input' .and. AE_shape /= 'Asin2_cw' ) call err_finalize('incorrect option for AE_shape')
+    &.and. AE_shape /= 'input' .and. AE_shape /= 'Asin2_cw' &
+    &.and. AE_shape /= 'Acos4sin') call err_finalize('incorrect option for AE_shape')
 
 
   allocate(Zatom(NE),Kion(NI),Rps(NE),NRps(NE))
