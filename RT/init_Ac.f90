@@ -100,7 +100,7 @@ Subroutine init_Ac
         tt=iter*dt
         xx = tt - 0.5d0*tpulse_1
         if (abs(xx)<0.5d0*tpulse_1) then
-          Ac_ext(iter,:)=-Epdir_1(:)*f0_1/omega_1*(cos(0.5d0*pi*xx/tpulse_1))**4*sin(omega_1*xx+phi_CEP_1*2d0*pi)
+          Ac_ext(iter,:)=-Epdir_1(:)*f0_1/omega_1*(cos(pi*xx/tpulse_1))**4*sin(omega_1*xx+phi_CEP_1*2d0*pi)
         end if
       enddo
 ! probe laser
